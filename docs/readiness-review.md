@@ -7,6 +7,40 @@ Local application and infrastructure checks passed. The owner approved the first
 push, and GitHub-hosted CI passed all 13 tests. Public visibility requires separate
 approval. This review does not establish production readiness.
 
+## Public-release preparation
+
+The application was left unchanged during portfolio polish. The README was
+shortened, the longer tested retry example moved to `docs/demo.md`, and genuine
+local UI captures added under `docs/screenshots/`. Grafana is shown in Explore
+with real API metrics; this does not imply a saved project dashboard exists.
+
+Current rechecks passed: 13 tests, compilation, `pip check`, Compose validation,
+and the existing-stack integration verifier. A disposable clean checkout also
+passed all 13 tests and configuration checks using the existing Python 3.12
+environment, with no `.env`, environments, backups or legacy files copied.
+A second cold stack initialization and another fresh dependency installation
+were not performed; existing volumes and credentials were preserved.
+
+The renewed Python audit found zero known advisories in 42 resolved packages.
+Public-facing history review fetched all 13 advertised remote refs, including PR
+refs, and scanned 10 commits without leaks. Exact credential checks of history
+and repository/PR metadata found zero matches. Commit identities use noreply
+addresses; available metadata and discussions contained no secret findings.
+Repository Actions defaults are read-only, with no stored Actions/Dependabot
+secrets, variables or environments. GitHub security-feature availability was not
+confirmed by the returned API metadata.
+
+Final staged content, screenshot pixels and Git history are reviewed before the
+private push. The latest hosted run must pass before recommending a visibility
+change. The repository stays private until the owner separately approves making
+it public; no cloud deployment is part of this release.
+
+All four screenshots were captured from the running stack and visually inspected
+without retouching. They show Swagger, a sum job completed with result 60, a
+simulated failure recorded after three attempts, and Grafana Explore displaying
+real submission counters by priority. No credential values or existing job lists
+are visible. Capture details are in [screenshots](screenshots/README.md).
+
 ## Scope and preservation
 
 Application source, tests, dependency files, Docker/Compose, monitoring, workflow,
@@ -46,7 +80,7 @@ report. Tests run with Python 3.12.16.
 | README failure/retry example | Executed successfully; one additional demo record retained |
 | pip-audit 2.10.1, `-r requirements-dev.txt` | 42 resolved packages; zero known advisories; zero skipped |
 | GitHub CLI account | Authenticated as `YourNoob-web` |
-| Remote upload | 22 files match local paths, modes and blob SHAs; repository remains private |
+| Initial remote upload | 22 files matched local paths, modes and blob SHAs; repository remains private |
 | Hosted GitHub Actions | [Successful initial push run](https://github.com/YourNoob-web/QueueOps/actions/runs/43797335902): 13 tests, dependency checks, compilation and Compose validation passed |
 | GitHub documentation preview | README and architecture Mermaid, tables, code blocks and relative documentation links render correctly in authenticated Chrome |
 | Paid AI/provider calls | None; provider tests use mocks |
