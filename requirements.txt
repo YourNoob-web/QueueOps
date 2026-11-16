@@ -4,7 +4,7 @@ uvicorn[standard]==0.54.0
 pydantic==2.14.3
 SQLAlchemy==2.1.8
 redis==8.1.0
-rq==2.12.0
+rq==3.0.0
 prometheus-client==0.26.0
 openai==3.51.0
 psycopg[binary]==3.3.9
