@@ -1,50 +1,39 @@
 # Security
 
-QueueOps currently targets trusted local development. It provides no API
-authentication, authorization, rate limiting, tenant isolation or TLS termination.
-Redis is unauthenticated on an internal Compose network and a loopback host port.
-Keep all published ports bound to `127.0.0.1`; do not expose this stack to the
-internet. An untrusted process on your Mac can still access loopback services.
+## Reporting a vulnerability
 
-Store local credentials in the ignored `.env` with owner-only permissions.
-`.env.example` contains placeholders only. Do not commit private keys, access
-tokens, database dumps, local backups or resolved Compose output. The build copies
-only application source and requirements; `.dockerignore` excludes secret files
-and development artifacts from the build context.
+Use GitHub's [private vulnerability report](https://github.com/YourNoob-web/QueueOps/security/advisories/new)
+when available. Include the affected commit, reproduction steps and impact.
+Do not include real credentials or personal data. If private reporting is
+unavailable, open an issue requesting a private contact channel without posting
+exploit details.
 
-Existing database and Grafana volume credentials must be preserved during the
-configuration migration. Removing a credential from source code does not rotate
-it or erase it from history. If a credential was ever pushed or shared, revoke or
-rotate it with its issuing service, update the relevant application/database
-configuration, then assess history cleanup separately. Do not delete volumes or
-rewrite shared history as an automatic fix.
+## Local security model
 
-RQ uses JSON serialization rather than pickle. This reduces deserialization risk
-but does not make an exposed Redis service safe. Keep Redis private.
+QueueOps is intended for trusted local use. It has no authentication,
+authorization, rate limiting, tenant isolation or TLS. Keep published ports on
+`127.0.0.1`. Other local processes can still access them.
 
-Incident analysis uses best-effort redaction across nested fields, URL passwords,
-common token formats, bearer tokens and private-key blocks. It is not a data-loss
-prevention system. Never send real secrets or sensitive personal data to the
-analyzer. Its unauthenticated endpoint can incur costs whenever an OpenAI key is
-configured, so keep it local and leave the key unset when not needed.
+- Store credentials in ignored `.env` with mode `0600`. Never commit keys, dumps,
+  logs or private backups. Resolved Compose output contains credentials; validate
+  with `docker compose config --quiet`.
+- Preserve existing database/Grafana credentials. Changing environment variables
+  does not reset accounts in initialized volumes. Do not delete volumes to fix a
+  credential mismatch.
+- RQ uses JSON serialization, but Redis must remain private and trusted.
+- Leave the optional provider key unset. Incident redaction is best effort;
+  never submit real secrets or sensitive logs. Enabling that endpoint can incur
+  API costs.
 
-Review dependencies and images before publishing:
+Before sharing changes, review dependencies and scan committed/staged content:
 
 ```sh
-python -m pip install pip-audit
 python -m pip_audit -r requirements-dev.txt
-# Scan published history and the proposed staged changes, excluding local data:
 gitleaks git --redact=100 .
 git diff --cached --no-ext-diff --binary | gitleaks stdin --redact=100
 ```
 
-Use current scanner versions. Do not post raw scanner output containing matches.
-A clean pattern scan is not proof that no credential exists. The current review
-ran Gitleaks against publication source/staged changes and pip-audit against the
-resolved Python requirements. Local ignored credentials and backups should not
-be included in the publication scan. See the readiness review for results.
-GitHub-hosted CI passed the 13 automated tests, dependency checks, compilation
-and Compose validation. Container image OS vulnerabilities remain unverified.
-
-To report a vulnerability, use the repository's private vulnerability reporting
-feature if enabled. Do not put credentials or exploit details in public issues.
+These commands require `pip-audit` and Gitleaks installed separately. A clean
+scan does not guarantee that every secret or vulnerability has been detected.
+See [failure semantics](docs/architecture.md#failure-semantics) for delivery and
+concurrency limitations.

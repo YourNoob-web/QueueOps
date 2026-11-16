@@ -4,10 +4,6 @@
 service that moves work out of HTTP requests and tracks execution in PostgreSQL.
 Redis and RQ handle priority queues; Prometheus and Grafana make the API observable.
 
-QueueOps explores a practical backend problem: accepting work quickly while making
-its eventual result, failure and retry state inspectable. It is a tested local
-portfolio prototype, without production delivery guarantees.
-
 ## Technology stack
 
 | Layer | Technologies |
@@ -50,7 +46,7 @@ Grafana shows Explore; no saved dashboard or alerts are shipped.
 | Failed job after three attempts | Grafana Explore with live API metrics |
 | ![Failed job, error and attempts](docs/screenshots/failed-job.png) | ![Grafana live metrics](docs/screenshots/grafana-metrics.png) |
 
-[Capture details](docs/screenshots/README.md).
+[Screenshot details](docs/demo.md#screenshots).
 
 ## Run locally
 
@@ -111,7 +107,7 @@ separately verifies PostgreSQL, Redis/RQ, failure/retry behavior and monitoring.
 checks Python 3.12 tests, dependencies, compilation and Compose on pushes/PRs.
 
 In Grafana Explore, select **Prometheus** and query `queueops_jobs_submitted_total`
-or `queueops_http_requests_total`. See the [verification evidence](docs/readiness-review.md).
+or `queueops_http_requests_total`.
 
 ## Operations and limits
 

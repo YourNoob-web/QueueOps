@@ -76,8 +76,21 @@ Explore with the provisioned **Prometheus** datasource. Try:
 - `queueops_http_requests_total`
 - `rate(queueops_http_request_duration_seconds_sum[5m])`
 
-The screenshots show real local results. Grafana Explore is supplied by Grafana;
-this project provisions its datasource, not a saved dashboard or alert rules.
+This project provisions Grafana's datasource, not a saved dashboard or alert rules.
+
+## Screenshots
+
+The [README gallery](../README.md#real-screenshots) uses unedited captures of the
+local stack. Dedicated demo jobs show a completed sum of `[10,20,30]` with result
+60 after one attempt, and a simulated failure after three attempts. No existing
+job list or credentials were captured.
+
+The Grafana Explore image shows submission counters by priority, not execution
+success or failure. Reproduce its graph with:
+
+```promql
+sum by (priority) (queueops_jobs_submitted_total{job="queueops-api",instance="api:8000"})
+```
 
 ## Verify the whole stack
 
