@@ -2,10 +2,10 @@
 
 Review date: November 15, 2026 (America/Los_Angeles).
 
-**Ready for a private GitHub publication as a local portfolio prototype.**
-Local application and infrastructure checks passed. The first push requires owner
-approval; GitHub-hosted CI is pending that push. Public visibility requires
-separate approval. This review does not establish production readiness.
+**Published privately as a verified local portfolio prototype.**
+Local application and infrastructure checks passed. The owner approved the first
+push, and GitHub-hosted CI passed all 13 tests. Public visibility requires separate
+approval. This review does not establish production readiness.
 
 ## Scope and preservation
 
@@ -46,8 +46,9 @@ report. Tests run with Python 3.12.16.
 | README failure/retry example | Executed successfully; one additional demo record retained |
 | pip-audit 2.10.1, `-r requirements-dev.txt` | 42 resolved packages; zero known advisories; zero skipped |
 | GitHub CLI account | Authenticated as `YourNoob-web` |
-| Remote preparation | Empty private `YourNoob-web/QueueOps` repository prepared; code not uploaded |
-| Hosted GitHub Actions | Pending first push and owner approval |
+| Remote upload | 22 files match local paths, modes and blob SHAs; repository remains private |
+| Hosted GitHub Actions | [Successful initial push run](https://github.com/YourNoob-web/QueueOps/actions/runs/43797335902): 13 tests, dependency checks, compilation and Compose validation passed |
+| GitHub documentation preview | README and architecture Mermaid, tables, code blocks and relative documentation links render correctly in authenticated Chrome |
 | Paid AI/provider calls | None; provider tests use mocks |
 
 The earlier review also performed a fresh dependency install, passed the same 13
@@ -81,32 +82,33 @@ Redis, RQ and monitoring; it is not currently part of hosted CI.
   diff and the initial commit history before upload; findings must be resolved
   before publication. No pre-existing Git history was present.
 
-The previous source scan covered 22 publishable files with zero leaks, zero exact
+Source and actual staged scans covered 22 files with zero leaks, zero exact
 matches for local PostgreSQL/Grafana passwords, and 64 passing exclusion checks.
-Final staged/history scan results are also checked before the first push and
-reported in the handoff. Local `.env`, backups, environments and binary caches
+The initial local history and an independently cloned GitHub copy also passed
+Gitleaks v8.30.1 with no findings. Local `.env`, backups, environments and binary caches
 are intentionally outside publication scope. Pattern scans cannot establish
 that every possible credential is absent.
 
-## GitHub state and release gate
+## GitHub state
 
 Target: [YourNoob-web/QueueOps](https://github.com/YourNoob-web/QueueOps), private.
-The local branch is `main`. The initial commit is prepared only after staging and
-security checks; inspect its exact identity with `git log -1 --oneline`.
+The branch is `main`; local `origin/main` points to the private repository.
+The approved initial commit is
+[`ae4e539c6cb2c0318c23af943ae964e0a9f269e8`](https://github.com/YourNoob-web/QueueOps/commit/ae4e539c6cb2c0318c23af943ae964e0a9f269e8).
+Documentation follow-ups record the verified publication and CI results.
 Repository-local author configuration uses the verified GitHub account's noreply
 address. No shared/global Git configuration is changed.
 
-Before the first push, the owner must approve uploading the reviewed local commit.
-After approval, push `main`, inspect the uploaded tree, wait for GitHub Actions,
-and correct any failures. Do not change repository visibility automatically.
-A configured workflow is not evidence that its hosted run succeeded.
+The owner approved the first push. Uploaded files, private visibility, fetched
+history and the successful hosted test log were verified. No production
+credentials were uploaded. Repository visibility must not change without
+separate approval. Mobile documentation layout was not tested.
 
 ```sh
-# Only after owner approval of the first push:
-git push -u origin main
+git status
 gh run list --repo YourNoob-web/QueueOps --limit 5
-# Watch the selected QueueOps CI run:
-# gh run watch RUN_ID --repo YourNoob-web/QueueOps --exit-status
+gh run view 43797335902 --repo YourNoob-web/QueueOps \
+  --json status,conclusion,headSha,url
 ```
 
 ## Finalization changes
@@ -116,7 +118,7 @@ gh run list --repo YourNoob-web/QueueOps --limit 5
 - Architecture: clarified Compose networking and outbound-access semantics.
 - Security guide: scan publication history/staged content rather than local
   ignored credentials and environment directories.
-- This report: current evidence and explicit first-push/hosted-CI approval gate.
+- This report: verified private publication, hosted CI and rendered-documentation evidence.
 
 No application rewrite, new paid feature or cloud deployment was introduced.
 
@@ -144,5 +146,5 @@ recovery and schema migrations remain future work.
 No Grafana dashboard, alerts, worker execution metrics, autoscaling, Terraform,
 AWS/Kubernetes deployment, load benchmarks or production availability guarantees
 are supplied. Transitive dependencies and image tags are not fully locked. The
-Python advisory audit is point-in-time; container OS vulnerability scanning and
-hosted Linux x86_64 CI execution remain unverified.
+Python advisory audit is point-in-time; container OS vulnerability scanning
+remains unverified. Hosted Linux x86_64 CI execution passed.

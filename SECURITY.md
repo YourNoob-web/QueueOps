@@ -42,8 +42,9 @@ Use current scanner versions. Do not post raw scanner output containing matches.
 A clean pattern scan is not proof that no credential exists. The current review
 ran Gitleaks against publication source/staged changes and pip-audit against the
 resolved Python requirements. Local ignored credentials and backups should not
-be included in the publication scan. See the readiness review for results. Container
-image OS vulnerabilities and a GitHub-hosted CI run remain unverified.
+be included in the publication scan. See the readiness review for results.
+GitHub-hosted CI passed the 13 automated tests, dependency checks, compilation
+and Compose validation. Container image OS vulnerabilities remain unverified.
 
 To report a vulnerability, use the repository's private vulnerability reporting
 feature if enabled. Do not put credentials or exploit details in public issues.

@@ -186,7 +186,9 @@ locked. See the [readiness review](docs/readiness-review.md) for evidence and sc
 
 The GitHub Actions workflow installs dependencies, runs all tests, compiles source
 and validates Compose using CI-only placeholders. It has read-only repository
-permissions and no production credentials. A GitHub-hosted run remains unverified.
+permissions and no production credentials. The first
+[GitHub-hosted run passed all 13 tests](https://github.com/YourNoob-web/QueueOps/actions/runs/43797335902),
+plus dependency, compilation and Compose validation checks.
 
 ## Observability and operations
 
