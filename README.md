@@ -101,13 +101,29 @@ python -m pytest -v
 python scripts/verify_stack.py
 ```
 
-**13 tests pass** with SQLite/fake queues/mocked provider calls. Live integration
+**22 tests pass**: the original 13 API/security tests plus 9 benchmark math and
+validation checks. Tests use SQLite, fake queues and mocked provider calls. Live integration
 separately verifies PostgreSQL, Redis/RQ, failure/retry behavior and monitoring.
 [GitHub Actions](https://github.com/YourNoob-web/QueueOps/actions/workflows/tests.yml)
 checks Python 3.12 tests, dependencies, compilation and Compose on pushes/PRs.
 
 In Grafana Explore, select **Prometheus** and query `queueops_jobs_submitted_total`
 or `queueops_http_requests_total`.
+
+## Local benchmark
+
+On an Apple M4 Mac, three rounds of 40 `sum_numbers` jobs per configuration
+(concurrency 8) produced these real results:
+
+| RQ workers | Median jobs/sec | P50 job lifecycle | P95 job lifecycle |
+| --- | ---: | ---: | ---: |
+| 1 | 40.14 | 496.7 ms | 1009.5 ms |
+| 3 | 64.52 | 245.7 ms | 439.3 ms |
+
+Scaling 1→3 workers increased median batch throughput **60.7%**. Lifecycle latency
+uses database creation→completion timestamps and includes queue wait; throughput
+includes HTTP submission and polling. These short synthetic batches are not a
+production capacity claim. See [methodology, per-round results and commands](docs/performance-benchmark.md).
 
 ## Operations and limits
 
