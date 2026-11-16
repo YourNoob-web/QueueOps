@@ -1,0 +1,9 @@
+# Allow only the inputs used by Dockerfile. Local secrets, environments, caches,
+# databases, logs, backups, keys and generated artifacts never enter the context.
+**
+!requirements.txt
+!app/
+app/**
+!app/__init__.py
+!app/main.py
+!app/worker.py

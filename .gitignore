@@ -1,0 +1,67 @@
+# Virtual environments (including the old Python 3.9 backup)
+.venv*/
+venv/
+env/
+ENV/
+.audit-venv/
+# Python and test output
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage*
+htmlcov/
+coverage.xml
+junit*.xml
+# Local data, logs and generated packages
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+*.sql
+*.dump
+*.rdb
+*.aof
+*.log
+logs/
+build/
+dist/
+*.egg-info/
+# Local secrets; only the credential-free template is publishable
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+id_rsa*
+id_ed25519*
+id_ecdsa*
+id_dsa*
+credentials.json
+service-account*.json
+.aws/
+.ssh/
+secrets/
+# Backups, editors and operating system files
+*_backup.py
+*.bak
+*.backup
+*.orig
+*.swp
+*.swo
+*~
+.DS_Store
+.idea/
+.vscode/
+local-backups/
+backups/
+backup/
+artifacts/
+# Legacy datasource copy kept locally; the provisioned file is under provisioning/.
+/grafana/datasource.yml
