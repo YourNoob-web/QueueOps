@@ -1,5 +1,5 @@
 # Versions from the existing, working Python 3.12 environment.
-fastapi==0.163.0
+fastapi==0.165.0
 uvicorn[standard]==0.54.0
 pydantic==2.14.3
 SQLAlchemy==2.1.8
