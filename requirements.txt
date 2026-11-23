@@ -1,7 +1,7 @@
 # Versions from the existing, working Python 3.12 environment.
 fastapi==0.163.0
 uvicorn[standard]==0.54.0
-pydantic==2.14.3
+pydantic==2.14.4
 SQLAlchemy==2.1.8
 redis==8.1.0
 rq==2.12.0
